@@ -1,0 +1,78 @@
+
+import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
+const useStyles = makeStyles({
+  table: {
+    minWidth: 650,
+  },
+  accordion: {
+    marginBottom: '10px',
+  },
+  nestedAccordion: {
+    flexDirection: 'column',
+  },
+});
+
+export default function App() {
+  const classes = useStyles();
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // fetch the data from the server
+    fetch('/statusData')
+      .then(res => res.json())
+      .then(data => setData(data));
+  }, []);
+
+  return (
+    <div>
+      <h1>Drawer-App</h1>
+      {data.map((section) => (
+        <Accordion key={section.title} className={classes.accordion}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <h2>{section.title}</h2>
+          </AccordionSummary>
+          <AccordionDetails>
+            {section.subsections.map((subsection) => (
+              <Accordion key={subsection.title} className={classes.nestedAccordion}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <h3>{subsection.title}</h3>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <TableContainer component={Paper}>
+                    <Table className={classes.table} aria-label="IP Status Table">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>IP Address</TableCell>
+                          <TableCell>Status</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {subsection.ips.map((ip) => (
+                          <TableRow key={ip.address}>
+                            <TableCell>{ip.address}</TableCell>
+                            <TableCell>{ip.status}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </AccordionDetails>
+              </Accordion>
+            ))}
+          </AccordionDetails>
+        </Accordion>
