@@ -19,6 +19,8 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useTableSearch } from 'react-table';
 import './App.css';
+
+
 const StyledExpandMoreIcon = withStyles({
   root: {
     color: 'white',
@@ -39,10 +41,19 @@ const useStyles = makeStyles({
 export default function App() {
   const classes = useStyles();
   const [data, setData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+const [filteredData, setFilteredData] = useState(statusData);
 
   useEffect(() => {
     setData(statusData);
   }, []);
+  useEffect(() => {
+    const filtered = statusData.filter((row) =>
+      row.ip.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredData(filtered);
+  }, [searchTerm, statusData]);
+  
   const AccordionSummary = withStyles({
     root: {
       backgroundColor: 'black',
@@ -54,7 +65,9 @@ export default function App() {
     },
     expanded: {},
   })(MuiAccordionSummary);
-
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
   return (
     <div>
       <h1>BP WAF</h1>
@@ -68,6 +81,14 @@ export default function App() {
         <h3>Blocked IPsets</h3>
       </AccordionSummary>
       <AccordionDetails>
+      <TextField
+  label="Search"
+  value={searchTerm}
+  onChange={handleSearchChange}
+  fullWidth
+  margin="normal"
+  variant="outlined"
+/>
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="IP Status Table">
             <TableHead>
@@ -76,7 +97,7 @@ export default function App() {
               </TableRow>
             </TableHead>
             <TableBody>
-                    {statusData.map((row) => (
+                    {filteredData.map((row) => (
                       <TableRow key={row.ip}>
                         <TableCell component="th" scope="row">
                           {row.ip}
@@ -95,6 +116,14 @@ export default function App() {
         <h3>WhiteListed IPsets</h3>
       </AccordionSummary>
       <AccordionDetails>
+      <TextField
+  label="Search"
+  value={searchTerm}
+  onChange={handleSearchChange}
+  fullWidth
+  margin="normal"
+  variant="outlined"
+/>
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="IP Status Table">
             <TableHead>
@@ -103,7 +132,7 @@ export default function App() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {statusData.map((row) => (
+              {filteredData.map((row) => (
                 <TableRow key={row.ip}>
                   <TableCell component="th" scope="row">
                     {row.ip}
@@ -128,6 +157,14 @@ export default function App() {
         <h3>Blocked IPsets</h3>
       </AccordionSummary>
       <AccordionDetails>
+      <TextField
+  label="Search"
+  value={searchTerm}
+  onChange={handleSearchChange}
+  fullWidth
+  margin="normal"
+  variant="outlined"
+/>
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="IP Status Table">
             <TableHead>
@@ -136,7 +173,7 @@ export default function App() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {statusData.map((row) => (
+              {filteredData.map((row) => (
                 <TableRow key={row.ip}>
                   <TableCell component="th" scope="row">
                     {row.ip}
@@ -154,6 +191,14 @@ export default function App() {
         <h3>WhiteListed IPsets</h3>
       </AccordionSummary>
       <AccordionDetails>
+      <TextField
+  label="Search"
+  value={searchTerm}
+  onChange={handleSearchChange}
+  fullWidth
+  margin="normal"
+  variant="outlined"
+/>
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="IP Status Table">
             <TableHead>
@@ -162,7 +207,7 @@ export default function App() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {statusData.map((row) => (
+              {filteredData.map((row) => (
                 <TableRow key={row.ip}>
                   <TableCell component="th" scope="row">
                     {row.ip}
