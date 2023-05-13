@@ -44,7 +44,10 @@ export default function App() {
     blocked: statusData.Blocked.map(ip => ({ ip, status: 'blocked' })),
     whitelist: statusData.WhiteList.map(ip => ({ ip, status: 'whitelisted' })),
   });
-
+  const [filteredData2, setFilteredData2] = useState({
+    blocked: statusData2.Blocked.map(ip => ({ ip, status: 'blocked' })),
+    whitelist: statusData2.WhiteList.map(ip => ({ ip, status: 'whitelisted' })),
+  });
   useEffect(() => {
     const filteredBlocked = statusData.Blocked.filter((row) =>
       row.toLowerCase().includes(searchTerm.toLowerCase())
@@ -54,7 +57,15 @@ export default function App() {
     ).map(ip => ({ ip, status: 'whitelisted' }));
     setFilteredData({ blocked: filteredBlocked, whitelist: filteredWhitelist });
   }, [searchTerm]);
-
+  useEffect(() => {
+    const filteredBlocked2 = statusData2.Blocked.filter((row) =>
+      row.toLowerCase().includes(searchTerm.toLowerCase())
+    ).map(ip => ({ ip, status: 'blocked' }));
+    const filteredWhitelist2 = statusData2.WhiteList.filter((row) =>
+      row.toLowerCase().includes(searchTerm.toLowerCase())
+    ).map(ip => ({ ip, status: 'whitelisted' }));
+    setFilteredData2({ blocked: filteredBlocked2, whitelist: filteredWhitelist2 });
+  }, [searchTerm]);
   const AccordionSummary = withStyles({
     root: {
       backgroundColor: 'black',
@@ -172,7 +183,7 @@ export default function App() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredData.blocked.map((ip) => (
+              {filteredData2.blocked.map((ip) => (
                 <TableRow key={ip.ip}>
                   <TableCell component="th" scope="row">
                     {ip.ip}
@@ -205,7 +216,7 @@ export default function App() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredData.whitelist.map((ip) => (
+              {filteredData2.whitelist.map((ip) => (
                 <TableRow key={ip.ip}>
                   <TableCell component="th" scope="row">
                     {ip.ip}
