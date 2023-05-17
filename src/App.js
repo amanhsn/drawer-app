@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import statusData from './dev.json';
-import statusData2 from './prod.json';
 import { withStyles } from '@material-ui/core/styles';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import {
@@ -44,10 +43,6 @@ export default function App() {
     blocked: statusData.Blocked.map(ip => ({ ip, status: 'blocked' })),
     whitelist: statusData.WhiteList.map(ip => ({ ip, status: 'whitelisted' })),
   });
-  const [filteredData2, setFilteredData2] = useState({
-    blocked: statusData2.Blocked.map(ip => ({ ip, status: 'blocked' })),
-    whitelist: statusData2.WhiteList.map(ip => ({ ip, status: 'whitelisted' })),
-  });
   useEffect(() => {
     const filteredBlocked = statusData.Blocked.filter((row) =>
       row.toLowerCase().includes(searchTerm.toLowerCase())
@@ -56,15 +51,6 @@ export default function App() {
       row.toLowerCase().includes(searchTerm.toLowerCase())
     ).map(ip => ({ ip, status: 'whitelisted' }));
     setFilteredData({ blocked: filteredBlocked, whitelist: filteredWhitelist });
-  }, [searchTerm]);
-  useEffect(() => {
-    const filteredBlocked2 = statusData2.Blocked.filter((row) =>
-      row.toLowerCase().includes(searchTerm.toLowerCase())
-    ).map(ip => ({ ip, status: 'blocked' }));
-    const filteredWhitelist2 = statusData2.WhiteList.filter((row) =>
-      row.toLowerCase().includes(searchTerm.toLowerCase())
-    ).map(ip => ({ ip, status: 'whitelisted' }));
-    setFilteredData2({ blocked: filteredBlocked2, whitelist: filteredWhitelist2 });
   }, [searchTerm]);
   const AccordionSummary = withStyles({
     root: {
@@ -81,15 +67,11 @@ export default function App() {
     setSearchTerm(event.target.value);
   };
   return (
-    <div>
-      <h1>BP WAF</h1>
+    <div container>
+      <h1>BP WAF PRODUCTION</h1>
       <div className="accordion-container">
-      <Accordion className={classes.accordion}>
-  <AccordionSummary expandIcon={<StyledExpandMoreIcon />}>
-    <h2>Development</h2>
-  </AccordionSummary>
   <AccordionDetails className={classes.accordionDetails}>
-    <Accordion>
+    <Accordion defaultExpanded>
       <AccordionSummary expandIcon={<StyledExpandMoreIcon />}>
         <h3>Blocked IPsets</h3>
       </AccordionSummary>
@@ -122,7 +104,7 @@ export default function App() {
         </TableContainer>
       </AccordionDetails>
     </Accordion>
-    <Accordion>
+    <Accordion defaultExpanded>
       <AccordionSummary expandIcon={<StyledExpandMoreIcon />}>
         <h3>WhiteListed IPsets</h3>
       </AccordionSummary>
@@ -156,80 +138,6 @@ export default function App() {
       </AccordionDetails>
     </Accordion>
   </AccordionDetails>
-</Accordion>
-      <Accordion className={classes.accordion}>
-  <AccordionSummary expandIcon={<StyledExpandMoreIcon />}>
-    <h2>Production</h2>
-  </AccordionSummary>
-  <AccordionDetails className={classes.accordionDetails}>
-    <Accordion>
-      <AccordionSummary expandIcon={<StyledExpandMoreIcon />}>
-        <h3>Blocked IPsets</h3>
-      </AccordionSummary>
-      <AccordionDetails className={classes.accordionDetails}>
-        <TextField
-          label="Search"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          fullWidth
-          margin="normal"
-          variant="outlined"
-        />
-        <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="Blocked IPset Table">
-            <TableHead>
-              <TableRow>
-                <TableCell>IP Address</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {filteredData2.blocked.map((ip) => (
-                <TableRow key={ip.ip}>
-                  <TableCell component="th" scope="row">
-                    {ip.ip}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </AccordionDetails>
-    </Accordion>
-    <Accordion>
-      <AccordionSummary expandIcon={<StyledExpandMoreIcon />}>
-        <h3>WhiteListed IPsets</h3>
-      </AccordionSummary>
-      <AccordionDetails className={classes.accordionDetails}>
-        <TextField
-          label="Search"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          fullWidth
-          margin="normal"
-          variant="outlined"
-        />
-        <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="Whitelisted IPset Table">
-            <TableHead>
-              <TableRow>
-                <TableCell>IP Address</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {filteredData2.whitelist.map((ip) => (
-                <TableRow key={ip.ip}>
-                  <TableCell component="th" scope="row">
-                    {ip.ip}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </AccordionDetails>
-    </Accordion>
-  </AccordionDetails>
-</Accordion>
       
 </div>    
     </div>
