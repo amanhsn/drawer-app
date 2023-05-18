@@ -26,7 +26,7 @@ const StyledExpandMoreIcon = withStyles({
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
+    minWidth: 200,
   },
   accordion: {
     marginBottom: '10px',
@@ -67,7 +67,7 @@ export default function App() {
     setSearchTerm(event.target.value);
   };
   return (
-    <div container>
+    <div>
       <h1>BP WAF PRODUCTION</h1>
       <div className="accordion-container">
   <AccordionDetails className={classes.accordionDetails}>
@@ -76,6 +76,7 @@ export default function App() {
         <h3>Blocked IPsets</h3>
       </AccordionSummary>
       <AccordionDetails className={classes.accordionDetails}>
+      <div className ="search-container">
         <TextField
           label="Search"
           value={searchTerm}
@@ -84,6 +85,8 @@ export default function App() {
           margin="normal"
           variant="outlined"
         />
+          </div>
+
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="Blocked IPset Table">
             <TableHead>
@@ -104,11 +107,15 @@ export default function App() {
         </TableContainer>
       </AccordionDetails>
     </Accordion>
+  </AccordionDetails>
+  <div className="accordion-container">
+  <AccordionDetails className={classes.accordionDetails}>
     <Accordion defaultExpanded>
       <AccordionSummary expandIcon={<StyledExpandMoreIcon />}>
-        <h3>WhiteListed IPsets</h3>
+        <h3>WhiteList IPsets</h3>
       </AccordionSummary>
       <AccordionDetails className={classes.accordionDetails}>
+      <div className ="search-container">
         <TextField
           label="Search"
           value={searchTerm}
@@ -117,8 +124,9 @@ export default function App() {
           margin="normal"
           variant="outlined"
         />
+        </div>
         <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="Whitelisted IPset Table">
+          <Table className={classes.table} aria-label="Blocked IPset Table">
             <TableHead>
               <TableRow>
                 <TableCell>IP Address</TableCell>
@@ -137,9 +145,9 @@ export default function App() {
         </TableContainer>
       </AccordionDetails>
     </Accordion>
-  </AccordionDetails>
-      
-</div>    
+  </AccordionDetails>  
+</div> 
+</div>   
     </div>
   );
 }
