@@ -147,6 +147,45 @@ export default function App() {
     </Accordion>
   </AccordionDetails>  
 </div> 
+<div className="accordion-container">
+  <AccordionDetails className={classes.accordionDetails}>
+    <Accordion defaultExpanded>
+      <AccordionSummary expandIcon={<StyledExpandMoreIcon />}>
+        <h3>IPsets</h3>
+      </AccordionSummary>
+      <AccordionDetails className={classes.accordionDetails}>
+      <div className ="search-container">
+        <TextField
+          label="Search"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          fullWidth
+          margin="normal"
+          variant="outlined"
+        />
+        </div>
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="Blocked IPset Table">
+            <TableHead>
+              <TableRow>
+                <TableCell>IP Address</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredData.whitelist.map((ip) => (
+                <TableRow key={ip.ip}>
+                  <TableCell component="th" scope="row">
+                    {ip.ip}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </AccordionDetails>
+    </Accordion>
+  </AccordionDetails>  
+</div> 
 </div>   
     </div>
   );
