@@ -42,6 +42,7 @@ export default function App() {
   const [filteredData, setFilteredData] = useState({
     blocked: statusData.Blocked.map(ip => ({ ip, status: 'blocked' })),
     whitelist: statusData.WhiteList.map(ip => ({ ip, status: 'whitelisted' })),
+    ipsets: statusData.Ipsets.map(ip => ({ ip, status: 'ipsets' })),
   });
   useEffect(() => {
     const filteredBlocked = statusData.Blocked.filter((row) =>
@@ -51,6 +52,10 @@ export default function App() {
       row.toLowerCase().includes(searchTerm.toLowerCase())
     ).map(ip => ({ ip, status: 'whitelisted' }));
     setFilteredData({ blocked: filteredBlocked, whitelist: filteredWhitelist });
+    const filteredIpsets = statusData.Ipsets.filter((row) =>
+    row.toLowerCase().includes(searchTerm.toLowerCase())
+  ).map(ip => ({ ip, status: 'ipsets' }));
+  setFilteredData({ blocked: filteredBlocked, whitelist: filteredWhitelist, ipsets: filteredIpsets });
   }, [searchTerm]);
   const AccordionSummary = withStyles({
     root: {
@@ -172,7 +177,7 @@ export default function App() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredData.whitelist.map((ip) => (
+              {filteredData.ipsets.map((ip) => (
                 <TableRow key={ip.ip}>
                   <TableCell component="th" scope="row">
                     {ip.ip}
